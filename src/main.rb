@@ -2,10 +2,11 @@
 require 'tty-prompt'
 require 'colorize'
 require 'csv'
-require 'awesome_print'
+require 'whirly'
 
 # Modules required
-require_relative('game')
+require_relative('card')
+require_relative('animation')
 
 # Game Name Banner
 puts """
@@ -24,7 +25,6 @@ Click Enter to continue...
 
 """
 gets.chomp
-
 
 # Welcome message (explain game briefly - extended references )
 puts """
@@ -99,9 +99,9 @@ A word will be displayed one at a time, name the font colour of the word (instea
 """  
 # Use colorize to show examples - method 1 (depending if we can keep the white background box when randomizing output during gameplay)
 puts "Here are some examples:"
-puts "xxxxxxxxxxxxxx".colorize(:color => :black, :background => :white)
+puts "xxxxxxxxxxxxxx".colorize(:color => :white, :background => :white)
 puts "     BLUE     ".colorize(:color => :red, :background => :white)
-print "xxxxxxxxxxxxxx".colorize(:color => :black, :background => :white) 
+print "xxxxxxxxxxxxxx".colorize(:color => :white, :background => :white) 
 puts " You would say: Red"
 puts
 puts "xxxxxxxxxxxxxx".colorize(:color => :white, :background => :white)
@@ -122,93 +122,49 @@ Keyboard control keys:
 [x] - to exit the game early
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
-
 """
 
-# Baseline Array Color Cards
-green = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     GREEN     ".colorize(:color => :light_green, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-black = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     BLACK     ".colorize(:color => :black, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-blue = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     BLUE      ".colorize(:color => :blue, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-red = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "      RED      ".colorize(:color => :red, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-orange = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "    ORANGE     ".colorize(:color => :yellow, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-purple = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     PINK      ".colorize(:color => :magenta, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-
-# Stroop Array Color Cards
-blue_green = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     GREEN     ".colorize(:color => :blue, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-blue_black = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     BLACK     ".colorize(:color => :blue, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-yellow_blue = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     BLUE      ".colorize(:color => :yellow, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-black_red = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "      RED      ".colorize(:color => :black, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-purple_orange = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "    ORANGE     ".colorize(:color => :magenta, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-blue_purple = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     PINK      ".colorize(:color => :blue, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-black_green = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     GREEN     ".colorize(:color => :black, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-black_black = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     BLACK     ".colorize(:color => :black, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-green_blue = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     BLUE      ".colorize(:color => :light_green, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-red_red = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "      RED      ".colorize(:color => :red, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-blue_orange = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "    ORANGE     ".colorize(:color => :blue, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-red_purple = ["xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "     PINK      ".colorize(:color => :red, :background => :white), "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white), "\n"]
-
-
-array_baseline = [green, black, blue, red, orange, purple]
-
-array_stroop = [red_purple, red_red, blue_orange, green_blue, black_black, black_green, blue_purple, purple_orange, black_red, yellow_blue, blue_black, blue_green]
-
-
-# Player game info stored (time start, time end, time duartion, game version: baseline/stroop effect)
+# Player game info stored (time start, time end, time duartion, game version: baseline Round 1)
+# Play baseline game first (color card font matches actual word, 15 rounds)
+# Timer starts recording 
 gets.chomp
-puts "GAME START"
-puts "ROUND 1"
-p date = Time.now.strftime("%F")
+puts """
+GAME START
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ROUND 1 - BASELINE TEST
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+"""
+puts date = Time.now.strftime("%F") 
 start_time_baseline = Time.now
+Card.card_generate(Card::SAME_COLORS)
 
-# sleep(3) #to test whether elapsed timer works
 
-# calls for Stroop test method from game.rb module
-Stroop.test(array_baseline)
-
-# Play baseline game first
-# Timer start recorded
-# Each word displayed with its actual color
-# 15 rounds of colored words 
-# Time end recorded and elapsed time calculated
+# Round 1 - Time end recorded and elapsed time calculated
 end_time_baseline = Time.now
 elapsed_baseline = end_time_baseline - start_time_baseline
 gets.chomp
 puts "Well done! This is the end of Round 1."
-
-# Display user results
-# Record user results
-p "In Round 1, you took #{elapsed_baseline} seconds" 
-gets.chomp
+puts "In Round 1, you took #{elapsed_baseline} seconds" 
+gets.chomp 
 puts "Ready for Round 2?"
+
+
+# Player game info stored (time start, time end, time duartion, game version: Stroop effect Round 2)
+# Play baseline game first (color card font does not matches actual word, 15 rounds)
+# Timer starts recording 
 gets.chomp
-
-
-# Play stroop effect game second
-puts "ROUND 2"
-p date = Time.now.strftime("Date: %F")
+puts """
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+GAME START
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+ROUND 2: STROOP TEST
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+"""
 start_time_stroop = Time.now
 
-# sleep(2) 
 # Timer start recorded
 # Each word displayed with its conflicting color
-Stroop.test(array_stroop)
+Card.card_generate(Card::STROOP_COLORS)
 
 # Prevent edge case using if statement to check correct control key is used when switching to next colored word
 # 15 rounds of conflicting colored words
@@ -221,14 +177,13 @@ puts "Great! That was a little harder wasn't it?"
 p "In Round 2, you took #{elapsed_stroop} seconds"
 gets.chomp
 elapsed_difference = elapsed_stroop - elapsed_baseline
-p "This is #{elapsed_difference} seconds slower than Round 1, when there were no cognitive inteferences." 
+p "This is #{elapsed_difference.round(2)} seconds slower than Round 1, when there were no cognitive inteferences." 
 
+start_time_baseline = start_time_baseline.strftime("%T")
+elapsed_baseline = elapsed_baseline.round(2)
 start_time_stroop = start_time_stroop.strftime("%T")
-elapsed_baseline = 
-# elapsed_baseline = elapsed_baseline.strftime("%T")
-# start_time_stroop = tart_time_stroop.strftime("%T")
-# elapsed_stroop = elapsed_stroop.strftime("%T")
-# elapsed_difference = elapsed_difference.strftime("%T")
+elapsed_stroop = elapsed_stroop.round(2)
+elapsed_difference = elapsed_difference.round(2)
 
 # Save player results explored into CSV spreadsheet
 # Stores player info into database
@@ -246,11 +201,8 @@ CSV.open("rubistroopie_players.csv", "a+") do |file|
     end
 end
 
-# Product CSV spreadsheet graphs to track results
-
-
 # Thanking players to participate message
-
+Animate.countdown
 
 
 
