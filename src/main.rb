@@ -7,6 +7,25 @@ require 'awesome_print'
 # Modules required
 require_relative('game')
 
+# Game Name Banner
+puts """
+
+'||''|.            '||       ||   .|'''.|    .                                     ||         
+ ||   ||  ... ...   || ...  ...   ||..  '  .||.  ... ..    ...     ...   ... ...  ...    .... 
+ ||''|'    ||  ||   ||'  ||  ||    ''|||.   ||    ||' '' .|  '|. .|  '|.  ||'  ||  ||  .|...||
+ ||   |.   ||  ||   ||    |  ||  .     '||  ||    ||     ||   || ||   ||  ||    |  ||  ||     
+.||.  '|'  '|..'|.  '|...'  .||. |'....|'   '|.' .||.     '|..|'  '|..|'  ||...'  .||.  '|...'
+                                                                          ||                  
+                                                                         ''''                 
+
+
+
+Click Enter to continue...
+
+"""
+gets.chomp
+
+
 # Welcome message (explain game briefly - extended references )
 puts """
 
@@ -66,23 +85,6 @@ if meditate == "yes" || meditate == "no"
 end
 
 
-# Stores player info into database
-players = [
-    ["#{name}", "#{age}", "#{gender}", "#{stress}", "#{meditate}"]
-]
-p players
-
-# headers = ["NAME", "AGE", "GENDER", "STRESS", "MEDITATE"]
-
-# CSV.open("players_data.csv", "w") do |file|
-#     file << headers
-#     player.each do |player|
-#         file << player
-#     end
-# end
-
-
-
 
 sleep(2) # To space out the next snippet on game instructions
 # Game instructions message (how to play, brief experiement explanation, controls to next colored card)
@@ -97,9 +99,9 @@ A word will be displayed one at a time, name the font colour of the word (instea
 """  
 # Use colorize to show examples - method 1 (depending if we can keep the white background box when randomizing output during gameplay)
 puts "Here are some examples:"
-puts "xxxxxxxxxxxxxx".colorize(:color => :black, :background => :black)
-puts "     BLUE     ".colorize(:color => :red, :background => :black)
-print "xxxxxxxxxxxxxx".colorize(:color => :black, :background => :black) 
+puts "xxxxxxxxxxxxxx".colorize(:color => :black, :background => :white)
+puts "     BLUE     ".colorize(:color => :red, :background => :white)
+print "xxxxxxxxxxxxxx".colorize(:color => :black, :background => :white) 
 puts " You would say: Red"
 puts
 puts "xxxxxxxxxxxxxx".colorize(:color => :white, :background => :white)
@@ -107,13 +109,6 @@ puts "     PINK     ".colorize(:color => :light_magenta, :background => :white)
 print "xxxxxxxxxxxxxx".colorize(:color => :white, :background => :white) 
 puts " You would say: Pink"
 puts
-
-# Use colorize to show examples - method 2 (simple and still clear method, but less pretty and doesn't account for various players might have different terminal background colors set)
-puts "For example: " + "BLUE ".colorize(:red) + "- You would say: Red"
-puts "For example: " + "PINK ".colorize(:light_magenta) + "- You would say: Pink" 
-puts "For example: " + "YELLOW ".colorize(:light_yellow) + "- You would say: Yellow" 
-puts "For example: " + "GREEN ".colorize(:red) + "- You would say: Red" 
-
 
 puts """
 
@@ -179,7 +174,7 @@ array_stroop = [red_purple, red_red, blue_orange, green_blue, black_black, black
 gets.chomp
 puts "GAME START"
 puts "ROUND 1"
-p date = Time.now.strftime("Date: %F")
+p date = Time.now.strftime("%F")
 start_time_baseline = Time.now
 
 # sleep(3) #to test whether elapsed timer works
@@ -225,12 +220,31 @@ elapsed_stroop = end_time_stroop - start_time_stroop
 puts "Great! That was a little harder wasn't it?"
 p "In Round 2, you took #{elapsed_stroop} seconds"
 gets.chomp
-elapsed_difference = elapsed_stroop = elapsed_baseline
-p "This is #{elapsed_difference} seconds slower than when there were no cognitive inteferences." 
+elapsed_difference = elapsed_stroop - elapsed_baseline
+p "This is #{elapsed_difference} seconds slower than Round 1, when there were no cognitive inteferences." 
 
+start_time_stroop = start_time_stroop.strftime("%T")
+elapsed_baseline = 
+# elapsed_baseline = elapsed_baseline.strftime("%T")
+# start_time_stroop = tart_time_stroop.strftime("%T")
+# elapsed_stroop = elapsed_stroop.strftime("%T")
+# elapsed_difference = elapsed_difference.strftime("%T")
 
 # Save player results explored into CSV spreadsheet
+# Stores player info into database
+players = [
+    ["#{name}", "#{age}", "#{gender}", "#{stress}", "#{meditate}", "#{date}", "#{start_time_baseline}", "#{elapsed_baseline}", "#{start_time_stroop}", "#{elapsed_stroop}", "#{elapsed_difference}"]
+]
+p players
 
+headers = ["NAME", "AGE", "GENDER", "STRESS", "MEDITATE", "DATE (YYYYMMDD)", "BASELINE START", "BASELINE DURATION(s)", "STROOP START", "STROOP DURATION(s)", "REACTION TIME DIFFERENCE(s)"]
+
+CSV.open("rubistroopie_players.csv", "a+") do |file|
+    file << headers
+    players.each do |player|
+        file << player
+    end
+end
 
 # Product CSV spreadsheet graphs to track results
 
