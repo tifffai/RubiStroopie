@@ -18,7 +18,7 @@ end
 
 
 
-# Color cards for Round 1 baseline game
+# Color cards for Round 1 baseline game..
 module ColorCardsBaseline
     def self.red_green
         puts "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white)
