@@ -21,6 +21,7 @@ end
 
 
 
+<<<<<<< HEAD
 # # Color cards for Round 1 baseline game
 # module ColorCardsBaseline
 #     def self.green
@@ -34,6 +35,15 @@ end
 #         puts "     BLACK     ".colorize(:color => :black, :background => :white)
 #         puts "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white) 
 #     end
+=======
+# Color cards for Round 1 baseline game..
+module ColorCardsBaseline
+    def self.red_green
+        puts "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white)
+        puts "     GREEN     ".colorize(:color => :red, :background => :white)
+        puts "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white) 
+    end
+>>>>>>> ad01f927cc54efc91193ac2d48351ae4277d914d
 
 #     def self.blue
 #         puts "xxxxxxxxxxxxxxx".colorize(:color => :white, :background => :white)
