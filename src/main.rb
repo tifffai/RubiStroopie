@@ -26,7 +26,7 @@ Click Enter to continue...
 """
 gets.chomp
 
-# Welcome message (explain game briefly - extended references )
+# Welcome message (explain game briefly)
 puts """
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -40,8 +40,7 @@ The Stroop Effect test is one of the best known phenomena in cognitive psycholog
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 """
-# Request player's info (name, age, gender, stress level, meditative state)
-
+# Collect player's info (name, age, gender, stress level, meditative state)
 # Request player's name - no checks because names should remain flexible (players may use numbers in nicknames)
 print "Please enter your name: "
 name = gets.strip.capitalize
@@ -84,10 +83,9 @@ if meditate == "yes" || meditate == "no"
     puts
 end
 
-
-
 sleep(2) # To space out the next snippet on game instructions
-# Game instructions message (how to play, brief experiement explanation, controls to next colored card)
+
+# Game instructions message (how to play, brief experiement explanation, examples, and keyboard controls instroduction)
 puts """
 
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -121,14 +119,14 @@ Keyboard control keys:
 [Enter] - to move onto the next word card
 [x] - to exit the game early
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 """
+
 
 # Player game info stored (time start, time end, time duartion, game version: baseline Round 1)
 # Play baseline game first (color card font matches actual word, 15 rounds)
-# Timer starts recording 
 gets.chomp
 puts """
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 GAME START
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 ROUND 1 - BASELINE TEST
@@ -136,22 +134,20 @@ ROUND 1 - BASELINE TEST
 """
 puts date = Time.now.strftime("%F") 
 start_time_baseline = Time.now
-Card.card_generate(Card::SAME_COLORS)
 
+Card.card_generate(Card::SAME_COLORS) # Links to module in card.rb to run the game
 
-# Round 1 - Time end recorded and elapsed time calculated
 end_time_baseline = Time.now
 elapsed_baseline = end_time_baseline - start_time_baseline
 gets.chomp
 puts "Well done! This is the end of Round 1."
-puts "In Round 1, you took #{elapsed_baseline} seconds" 
+puts "In Round 1, you took #{elapsed_baseline.round(2)} seconds" 
 gets.chomp 
 puts "Ready for Round 2?"
 
 
 # Player game info stored (time start, time end, time duartion, game version: Stroop effect Round 2)
 # Play baseline game first (color card font does not matches actual word, 15 rounds)
-# Timer starts recording 
 gets.chomp
 puts """
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
@@ -162,35 +158,28 @@ ROUND 2: STROOP TEST
 """
 start_time_stroop = Time.now
 
-# Timer start recorded
-# Each word displayed with its conflicting color
-Card.card_generate(Card::STROOP_COLORS)
+Card.card_generate(Card::STROOP_COLORS) # Links to module in card.rb to run the game
 
-# Prevent edge case using if statement to check correct control key is used when switching to next colored word
-# 15 rounds of conflicting colored words
-# Time end recorded
-# Display user results
 end_time_stroop = Time.now
 elapsed_stroop = end_time_stroop - start_time_stroop
-
 puts "Great! That was a little harder wasn't it?"
 p "In Round 2, you took #{elapsed_stroop} seconds"
 gets.chomp
 elapsed_difference = elapsed_stroop - elapsed_baseline
 p "This is #{elapsed_difference.round(2)} seconds slower than Round 1, when there were no cognitive inteferences." 
 
+
+# Set results in easy to use values before exporting to CSV
 start_time_baseline = start_time_baseline.strftime("%T")
 elapsed_baseline = elapsed_baseline.round(2)
 start_time_stroop = start_time_stroop.strftime("%T")
 elapsed_stroop = elapsed_stroop.round(2)
 elapsed_difference = elapsed_difference.round(2)
 
-# Save player results explored into CSV spreadsheet
-# Stores player info into database
+# Saves player's info and results explored into CSV spreadsheet
 players = [
     ["#{name}", "#{age}", "#{gender}", "#{stress}", "#{meditate}", "#{date}", "#{start_time_baseline}", "#{elapsed_baseline}", "#{start_time_stroop}", "#{elapsed_stroop}", "#{elapsed_difference}"]
 ]
-p players
 
 headers = ["NAME", "AGE", "GENDER", "STRESS", "MEDITATE", "DATE (YYYYMMDD)", "BASELINE START", "BASELINE DURATION(s)", "STROOP START", "STROOP DURATION(s)", "REACTION TIME DIFFERENCE(s)"]
 
@@ -201,7 +190,7 @@ CSV.open("rubistroopie_players.csv", "a+") do |file|
     end
 end
 
-# Thanking players to participate message
+# Thanking players for participate message - link to animation.rb page
 Animate.countdown
 
 

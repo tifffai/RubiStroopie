@@ -1,4 +1,3 @@
-
 module Animate
     def self.countdown
         # puts "abc"
@@ -13,3 +12,5 @@ module Animate
         end
     end
 end
+
+say "beep beep"

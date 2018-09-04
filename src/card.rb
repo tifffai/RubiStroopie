@@ -31,8 +31,6 @@ module Card
 
 
     def self.color_cards(cards)
-        # puts "color_cards"
-        # print cards
         puts
         pattern = "x" * 15
         pattern_theme = {color: :white, background: :white}
@@ -57,8 +55,6 @@ module Card
 
     def self.card_generate(cards)
         counter = 0
-        # puts "card_generate"
-        # puts "card_generate WHILE"
         cards = self.color_cards(cards)
 
         while counter < 15
