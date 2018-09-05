@@ -8,13 +8,13 @@ module Card
         {text: "     GREEN     ", text_color: :red },
         {text: "     GREEN     ", text_color: :green },
         {text: "     BLUE      ", text_color: :magenta },
-        {text: "     BLUE      ", text_color: :yellow },
+        {text: "     BLUE      ", text_color: :green},
         {text: "     PINK      ", text_color: :black },
         {text: "     PINK      ", text_color: :red },
         {text: "    ORANGE     ", text_color: :green },
         {text: "    ORANGE     ", text_color: :blue },
         {text: "      RED      ", text_color: :black },
-        {text: "      RED      ", text_color: :yellow },
+        {text: "      RED      ", text_color: :magenta },
 
     ]
 
@@ -23,7 +23,7 @@ module Card
         {text: "     GREEN     ", text_color: :green },
         {text: "     BLUE      ", text_color: :blue },
         {text: "     PINK      ", text_color: :magenta },
-        {text: "    ORANGE     ", text_color: :yellow },
+        {text: "      GREY     ", text_color: :light_black},
         {text: "      RED      ", text_color: :red },
 
     ]
@@ -31,7 +31,7 @@ module Card
 
 
     def self.color_cards(cards)
-        puts
+        # puts
         pattern = "x" * 15
         pattern_theme = {color: :white, background: :white}
 
@@ -63,12 +63,14 @@ module Card
             puts sampled_card
             choice = gets.chomp
             if choice == "x"
-                print "Sorry to see you go! "
-                break
-            end 
+                abort("Sorry to see you go - Have a great day!!")
+                exit
+            end
             counter += 1
         end
     end
 
 
 end
+
+# puts Card.color_cards(STROOP_COLORS)

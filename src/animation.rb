@@ -12,5 +12,3 @@ module Animate
         end
     end
 end
-
-say "beep beep"
