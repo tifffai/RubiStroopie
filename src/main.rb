@@ -3,7 +3,6 @@ require 'tty-prompt'
 require 'colorize'
 require 'csv'
 require 'whirly'
-require 'pry'
 
 # Modules required
 require_relative('card')
@@ -109,8 +108,8 @@ Your performance will be timed.
 """  
 # Use modules to show color cards examples
 puts "EXAMPLES"
-puts "You would say: Pink"
-puts Card.color_cards(Card::STROOP_COLORS)[1] 
+puts "You would say: Red"
+puts Card.color_cards(Card::STROOP_COLORS)[2] 
 puts "You would say: Blue"
 puts Card.color_cards(Card::SAME_COLORS)[2]
 
@@ -179,12 +178,17 @@ elapsed_stroop = end_time_stroop - start_time_stroop # Calculates the reaction t
 
 # Display Round 2 Results
 
-puts "Great! That was a little harder wasn't it?"
+puts "Excellent! That was a little harder wasn't it?"
 gets.chomp
 system "clear"
 puts "In Round 2, you took #{elapsed_stroop} seconds"
 elapsed_difference = elapsed_stroop - elapsed_baseline
-p "This is #{elapsed_difference.round(3)} seconds slower than Round 1, when there were no cognitive inteferences." 
+puts """
+This is #{elapsed_difference.round(3)} seconds slower than Round 1, where there was no cognitive inteferences.
+
+Compare and see if your reaction time difference is less if you've mediated or feel less stressed!
+
+"""
 
 # Set results in easy to use values before exporting to CSV
 start_time_baseline = start_time_baseline.strftime("%T")
