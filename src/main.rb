@@ -3,6 +3,7 @@ require 'tty-prompt'
 require 'colorize'
 require 'csv'
 require 'whirly'
+require 'pry'
 
 # Modules required
 require_relative('card')
@@ -27,6 +28,7 @@ Press Enter to continue...
 """
 gets.chomp
 system "clear"
+
 
 # Welcome message (explain game briefly)
 puts """
@@ -58,7 +60,7 @@ while true
     if age.to_i.to_s == age && age.to_i > 3 && age.to_i <= 120
         break
     else
-        print "Oops.. Invalid response, #{name} please enter a number for your age: "
+        print "Oops.. Invalid response - #{name}, please enter a number for your age: "
         age = gets.strip
     end
 end
@@ -71,14 +73,14 @@ gender = prompt.select("Please select your gender:", %w(Female Male Trans Bigend
 
 # Request player's stress level - multiple choice fixed options (0..5)
 prompt = TTY::Prompt.new
-stress = prompt.select("Rate your current level of stress (0 = very relaxed; to 5 = debilitating stress):", %w(0 1 2 3 4 5))
+stress = prompt.select("Rate your current level of stress (0 = very relaxed; to 5 = crippling stress):", %w(0 1 2 3 4 5))
 
 
 # Request player's meditation status - check for valid yes/no response
 print "Did you meditate in the last hour [yes/no]?"
 meditate = gets.strip.downcase
 while meditate != "yes" && meditate != "no"
-    puts "Oops.. Invalid response, #{name} please share did you meditate in the last hour [yes/no]? "
+    puts "Uh oh.. Invalid response - #{name}, did you meditate in the last hour [yes/no]? "
     meditate = gets.strip.downcase
 end
 
@@ -98,9 +100,11 @@ puts """
   HOW THE GAME WORKS
 ++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-A word will be displayed one at a time, say out louad the font colour of the word (do not read the actual word). 
-When you've correctly name the font colour, then use the listed control keys below to go to the next word. There 
-will be 15 words each round, and your performance will be timed. 
+A word will be displayed one at a time, say out loud the text colour of the word (do not read the actual word) as 
+quickly as possible. 
+
+There are 2 rounds, each with 15 word cards, one card at a time (see control keys below). 
+Your performance will be timed. 
 
 """  
 # Use modules to show color cards examples
@@ -111,15 +115,16 @@ puts "You would say: Blue"
 puts Card.color_cards(Card::SAME_COLORS)[2]
 
 puts """
-There will be 2 rounds, first round will measure your baseline performance. The second round will allow you to test 
-and see how stroop effect affects your reaction time when there's interference. 
+The first round will measure your baseline performance (matching text color with word). The second round will allow 
+you to test and see how stroop effect affects your reaction time when there's interference (conflicting text color 
+with word). 
 
 Happy RubiStrooping!
 
-Keyboard control keys:
+Keyboard Control Keys:
 [Enter] - to start the game 
 [Enter] - to move onto the next word card
-[x] - to exit the game early
+[x]+[Enter] - to exit the game early
 
 """
 
@@ -144,7 +149,6 @@ Card.card_generate(Card::SAME_COLORS) # Links to module in card.rb to run the ga
 
 end_time_baseline = Time.now
 elapsed_baseline = end_time_baseline - start_time_baseline
-gets.chomp
 
 # Display Round 1 Results 
 puts "Well done! This is the end of Round 1."
@@ -174,12 +178,13 @@ end_time_stroop = Time.now
 elapsed_stroop = end_time_stroop - start_time_stroop # Calculates the reaction time delay between Round 1 & 2
 
 # Display Round 2 Results
+
 puts "Great! That was a little harder wasn't it?"
 gets.chomp
+system "clear"
 puts "In Round 2, you took #{elapsed_stroop} seconds"
 elapsed_difference = elapsed_stroop - elapsed_baseline
 p "This is #{elapsed_difference.round(3)} seconds slower than Round 1, when there were no cognitive inteferences." 
-
 
 # Set results in easy to use values before exporting to CSV
 start_time_baseline = start_time_baseline.strftime("%T")
@@ -193,17 +198,30 @@ players = [
     ["#{name}", "#{age}", "#{gender}", "#{stress}", "#{meditate}", "#{date}", "#{start_time_baseline}", "#{elapsed_baseline}", "#{start_time_stroop}", "#{elapsed_stroop}", "#{elapsed_difference}"]
 ]
 
+# Exports all listed data below into a CSV spreadsheet (for tracking progress) - checks if file already exists then it adds data to the existing file, otherwise it creates a new file with column headings before adding player's data 
 headers = ["NAME", "AGE", "GENDER", "STRESS", "MEDITATE", "DATE (YYYYMMDD)", "BASELINE START", "BASELINE DURATION(s)", "STROOP START", "STROOP DURATION(s)", "REACTION TIME DIFFERENCE(s)"]
 
-CSV.open("rubistroopie_players.csv", "a+") do |file|
-    file << headers
-    players.each do |player|
-        file << player
+if(File.exist?("rubistroopie_players.csv")) 
+    CSV.open("rubistroopie_players.csv", "a+") do |file|
+        players.each do |player|
+            file << player
+        end
+    end
+else 
+    CSV.open("rubistroopie_players.csv", "a+") do |file|
+        file << headers 
+        players.each do |player|
+            file << player
+        end
     end
 end
 
 # Thanking players for participate message - link to animation.rb page
-Animate.countdown
+if "#{meditate}" == "no"
+    Animate.farewell_no_meditation
+else
+    Animate.farewell_yes_meditation
+end
 
 
 

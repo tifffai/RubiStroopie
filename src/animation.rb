@@ -1,6 +1,6 @@
 module Animate
-    def self.countdown
-        # puts "abc"
+    
+    def self.farewell_no_meditation
     Whirly.configure spinner: "dots"
         Whirly.start do
             Whirly.status = "Hope you had some fun! "
@@ -11,4 +11,17 @@ module Animate
             sleep 1
         end
     end
+
+    def self.farewell_yes_meditation
+    Whirly.configure spinner: "dots"
+        Whirly.start do
+            Whirly.status = "Hope you had some fun! "
+            sleep 2
+            Whirly.status = "Keep tracking your stress and meditation practice!"
+            sleep 2
+            Whirly.status = "SEE YOU SOON!"
+            sleep 1
+        end
+    end
+
 end

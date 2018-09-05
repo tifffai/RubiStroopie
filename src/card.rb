@@ -6,15 +6,15 @@ module Card
         {text: "     BLACK     ", text_color: :blue },
         {text: "     BLACK     ", text_color: :magenta },
         {text: "     GREEN     ", text_color: :red },
-        {text: "     GREEN     ", text_color: :green },
+        {text: "     GREEN     ", text_color: :light_black },
         {text: "     BLUE      ", text_color: :magenta },
         {text: "     BLUE      ", text_color: :green},
         {text: "     PINK      ", text_color: :black },
         {text: "     PINK      ", text_color: :red },
-        {text: "    ORANGE     ", text_color: :green },
-        {text: "    ORANGE     ", text_color: :blue },
-        {text: "      RED      ", text_color: :black },
-        {text: "      RED      ", text_color: :magenta },
+        {text: "     GREY      ", text_color: :green },
+        {text: "     GREY      ", text_color: :blue },
+        {text: "     RED       ", text_color: :black },
+        {text: "     RED       ", text_color: :magenta },
 
     ]
 
@@ -23,8 +23,8 @@ module Card
         {text: "     GREEN     ", text_color: :green },
         {text: "     BLUE      ", text_color: :blue },
         {text: "     PINK      ", text_color: :magenta },
-        {text: "      GREY     ", text_color: :light_black},
-        {text: "      RED      ", text_color: :red },
+        {text: "     GREY      ", text_color: :light_black},
+        {text: "     RED       ", text_color: :red },
 
     ]
 
@@ -63,7 +63,7 @@ module Card
             puts sampled_card
             choice = gets.chomp
             if choice == "x"
-                abort("Sorry to see you go - Have a great day!!")
+                abort("Sorry to see you go! 😢 ")
                 exit
             end
             counter += 1
@@ -73,4 +73,3 @@ module Card
 
 end
 
-# puts Card.color_cards(STROOP_COLORS)
