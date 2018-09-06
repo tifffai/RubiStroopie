@@ -32,9 +32,9 @@ system "clear"
 # Welcome message (explain game briefly)
 puts """
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   Welcome to the RubiStroopie Game
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 This is a simple game that tests your reaction time under interference! 
 
@@ -43,7 +43,7 @@ who first demonstrated the effect that interference can have in relation to reac
 widely used today to explore key aspects of attention, learning, memory, reading, language, cognitive skills, and 
 neural mechanisms. 
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 """
 # Collect player's info (name, age, gender, stress level, meditative state)
@@ -95,9 +95,9 @@ system "clear"
 # Game instructions message (how to play, brief experiement explanation, examples, and keyboard controls instroduction)
 puts """
 
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
   HOW THE GAME WORKS
-++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 A word will be displayed one at a time, say out loud the text colour of the word (do not read the actual word) as 
 quickly as possible. 

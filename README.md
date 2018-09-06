@@ -93,8 +93,8 @@ Pry is a powerful debugging tool written from scratch to provide a number of adv
   
 Pry can be invoked in the middle of a running program. It opens a Pry session at the point it's called and makes all program state at that point available. When the session ends the program continues with any modifications we made to it.
 
-We have used pry for debugging and checking classes. (see below video)
-![Alt Text](https://j.gifs.com/VPB7KM.gif)
+We used pry to debug and check for correcet datatypes. (see below video)
+![Pry Demo](https://j.gifs.com/VPB7KM.gif)
 
 ---
 # Code Structure
